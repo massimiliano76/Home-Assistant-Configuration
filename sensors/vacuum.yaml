@@ -1,0 +1,129 @@
+- platform: template
+  sensors:
+    vacuum_status:
+      value_template: '{{ states.vacuum.mijia.attributes.status }}'
+      entity_id: vacuum.mijia
+      icon_template: >
+        {% if is_state('sensor.vacuum_status', 'Charging') %}
+          mdi:battery-charging
+        {% else %}
+          mdi:exclamation
+        {% endif %}
+      friendly_name: Status
+    vacuum_battery_level:
+      value_template: '{{ states.vacuum.mijia.attributes.battery_level }}'
+      entity_id: vacuum.mijia
+      icon_template: '{{ states.vacuum.mijia.attributes.battery_icon }}'
+      friendly_name: Remaining battery
+      unit_of_measurement: "%"
+
+  # Vacuum Main Brush
+    vacuum_main_brush_left:
+      value_template: '{{ states.vacuum.mijia.attributes.main_brush_left }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:refresh
+      unit_of_measurement: "h"
+      friendly_name: Replace main brush in about
+    vacuum_main_brush_used:
+      value_template: '{{ float(300) - float(states.vacuum.mijia.attributes.main_brush_left) | round(0) }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:timer-sand
+      unit_of_measurement: "h"
+      friendly_name: Used
+    vacuum_main_brush_remaining:
+      value_template: '{{ "%01d" | format((float(states.vacuum.mijia.attributes.main_brush_left) / float(300)) * float(100) | int) }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:chart-bar
+      unit_of_measurement: "%"
+      friendly_name: Remaining
+
+  # Vacuum Side Brush
+    vacuum_side_brush_left:
+      value_template: '{{ states.vacuum.mijia.attributes.side_brush_left }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:refresh
+      unit_of_measurement: "h"
+      friendly_name: Replace side brush in about
+    vacuum_side_brush_used:
+      value_template: '{{ float(200) - float(states.vacuum.mijia.attributes.side_brush_left) | round(0) }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:timer-sand
+      unit_of_measurement: "h"
+      friendly_name: Used
+    vacuum_side_brush_remaining:
+      value_template: '{{ "%01d" | format((float(states.vacuum.mijia.attributes.side_brush_left) / float(200)) * float(100) | int) }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:chart-bar
+      unit_of_measurement: "%"
+      friendly_name: Remaining
+
+  # Vacuum Filter
+    vacuum_filter_left:
+      value_template: '{{ states.vacuum.mijia.attributes.filter_left }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:refresh
+      unit_of_measurement: "h"
+      friendly_name: Replace filter in about
+    vacuum_filter_used:
+      value_template: '{{ float(150) - float(states.vacuum.mijia.attributes.filter_left) | round(0) }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:timer-sand
+      unit_of_measurement: "h"
+      friendly_name: Used
+    vacuum_filter_remaining:
+      value_template: '{{ "%01d" | format((float(states.vacuum.mijia.attributes.filter_left) / float(150)) * float(100) | int) }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:chart-bar
+      unit_of_measurement: "%"
+      friendly_name: Remaining
+
+  # Vacuum Sensor
+    vacuum_sensor_left:
+      value_template: '{{ float(30) - float(states.vacuum.mijia.attributes.sensor_dirty) | round(0) }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:refresh
+      unit_of_measurement: "h"
+      friendly_name: Clean sensors in about
+    vacuum_sensor_dirty:
+      value_template: '{{ states.vacuum.mijia.attributes.sensor_dirty }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:timer-sand
+      unit_of_measurement: "h"
+      friendly_name: Used
+    vacuum_sensor_remaining:
+      value_template: '{{ "%01d" | format(((float(30) - float(states.vacuum.mijia.attributes.sensor_dirty)) / float(30)) * float(100) | int) }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:chart-bar
+      unit_of_measurement: "%"
+      friendly_name: Remaining
+
+  # Cleaning History
+    vacuum_cleaned_area:
+      value_template: '{{ states.vacuum.mijia.attributes.cleaned_area }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:checkbox-blank-outline
+      friendly_name: Cleaning area
+      unit_of_measurement: "m²"
+    vacuum_cleaning_time:
+      value_template: '{{ states.vacuum.mijia.attributes.cleaning_time }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:clock
+      friendly_name: Cleaning time
+      unit_of_measurement: "min"
+    vacuum_total_cleaning_time:
+      value_template: '{{ states.vacuum.mijia.attributes.total_cleaning_time }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:clock-alert
+      friendly_name: Total time
+      unit_of_measurement: "min"
+    vacuum_total_cleaned_area:
+      value_template: '{{ states.vacuum.mijia.attributes.total_cleaned_area }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:checkbox-multiple-blank-outline
+      friendly_name: Total area
+      unit_of_measurement: "m²"
+    vacuum_cleaning_count:
+      value_template: '{{ states.vacuum.mijia.attributes.cleaning_count }}'
+      entity_id: vacuum.mijia
+      icon_template: mdi:pound
+      friendly_name: Total cleanups

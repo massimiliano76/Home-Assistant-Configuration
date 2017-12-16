@@ -1,0 +1,154 @@
+
+# ############################################################
+# #
+# # Home Assistant Group
+# #
+# ############################################################
+
+default_view:
+  view: yes
+  name: Home
+  icon: mdi:home
+  entities:
+    - group.bedroom_lights
+    - group.living_room_lights
+    - group.bedroom_climate
+    - media_player.spotify
+    - binary_sensor.device_tracker_94e96ad49595
+    - binary_sensor.device_tracker_98d6f760167f
+bedroom_lights:
+  name: Bedroom Lights
+  entities: 
+    - light.bedroom_light
+    - light.bed_light
+living_room_lights:
+  name: Living Room Lights
+  entities:
+    - light.living_room_light
+    - light.cabinet_lights
+    - light.christmas_lights
+bedroom_climate:
+  name: Bedroom Climate
+  entities:
+    - sensor.bedroom_temperature
+    - sensor.bedroom_humidity
+    - climate.bedroom_thermostat
+
+cameras:
+  name: Cameras
+  view: yes
+  icon: mdi:cctv
+  entities:
+    - camera.basement_camera
+    - camera.hallway_camera
+
+vacuum:
+  name: Vacuum
+  view: yes
+  icon: mdi:google-circles-group
+  entities:
+    - group.vacuum_status
+    - group.vacuum_history
+    - group.vacuum_main_brush
+    - group.vacuum_side_brush
+    - group.vacuum_filter
+    - group.vacuum_sensors
+vacuum_status:
+  name: Vacuum
+  entities:
+    - vacuum.mijia
+    - sensor.vacuum_status
+    - sensor.vacuum_battery_level
+vacuum_main_brush:
+  name: Main brush
+  entities:
+    - sensor.vacuum_main_brush_remaining
+    - sensor.vacuum_main_brush_left
+    - sensor.vacuum_main_brush_used
+vacuum_side_brush:
+  name: Side brush
+  entities:
+    - sensor.vacuum_side_brush_remaining
+    - sensor.vacuum_side_brush_left
+    - sensor.vacuum_side_brush_used
+vacuum_filter:
+  name: Filter
+  entities:
+    - sensor.vacuum_filter_remaining
+    - sensor.vacuum_filter_left
+    - sensor.vacuum_filter_used
+vacuum_sensors:
+  name: Sensors
+  entities:
+    - sensor.vacuum_sensor_remaining
+    - sensor.vacuum_sensor_left
+    - sensor.vacuum_sensor_dirty
+vacuum_history:
+  name: Cleaning history
+  entities:
+    - sensor.vacuum_cleaned_area
+    - sensor.vacuum_cleaning_time
+    - sensor.vacuum_total_cleaning_time
+    - sensor.vacuum_total_cleaned_area
+    - sensor.vacuum_cleaning_count
+
+devices:
+  name: Devices
+  view: yes
+  icon: mdi:cellphone-link
+  entities:
+    - group.device_statuses
+device_statuses:
+  name: Device Statuses
+  entities:
+    - binary_sensor.device_tracker_94e96ad49595
+    - binary_sensor.device_tracker_98d6f760167f
+    - binary_sensor.device_tracker_606dc794bdd4
+    - binary_sensor.device_tracker_34ce00ea2be5
+
+printer:
+  name: Printer
+  view: yes
+  icon: mdi:printer
+  entities: group.printer_overview
+printer_overview:
+  name: Printer Overview
+  entities:
+    - binary_sensor.device_tracker_606dc794bdd4
+    - sensor.cyan
+    - sensor.magenta
+    - sensor.yellow
+    - sensor.key
+
+servers:
+  name: Servers
+  view: yes
+  icon: mdi:server
+  entities:
+    - group.speed_test
+speed_test:
+  name: Speedtest
+  entities:
+    - sensor.speedtest_download
+    - sensor.speedtest_upload
+    - sensor.speedtest_ping
+
+weather:
+  name: Weather
+  view: yes
+  icon: mdi:weather-cloudy
+  entities:
+    - group.weather_overview
+weather_overview:
+  name: Weather Overview
+  entities:
+    - sensor.pws_temp_c
+    - sensor.pws_temp_high_1d_c
+    - sensor.pws_temp_low_1d_c
+    - sensor.pws_precip_1d
+    - sensor.pws_relative_humidity
+    - sensor.pws_pressure_mb
+#    - sensor.pws_precip_1d_mm
+    - sensor.pws_wind_kph
+#    - sensor.pws_wind_1d_kph
+    - sensor.pws_alerts

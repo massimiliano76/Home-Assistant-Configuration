@@ -1,0 +1,88 @@
+- id: notif_presence_benji
+  alias: Benji is home
+  trigger:
+  - entity_id: device_tracker.94e96ad49595
+    from: not_home
+    platform: state
+    to: home
+  condition:
+  - condition: template
+    value_template: '{{ (as_timestamp(now()) - as_timestamp(states.device_tracker[''94e96ad49595''].last_changed))
+      | int < 3600 | int }}'
+  action:
+  - data:
+      message: WOHOO!
+      title: Benji is home
+    service: notify.pushbullet
+  - data:
+      language: en-us
+      message: Welcome home Benji.
+    service: tts.google_say
+- id: notif_presence_kamilka
+  alias: Kamilka is home
+  trigger:
+  - entity_id: device_tracker.98d6f760167f
+    from: not_home
+    platform: state
+    to: home
+  condition:
+  - condition: template
+    value_template: '{{ (as_timestamp(now()) - as_timestamp(states.device_tracker[''98d6f760167f''].last_changed))
+      | int < 3600 | int }}'
+  action:
+  - data:
+      message: :)
+      title: Kamilka is home
+    service: notify.pushbullet
+  - data:
+      language: pl
+      message: Witam w domu Kamilciu.
+    service: tts.google_say
+- id: bed_light_auto
+  alias: Bed light
+  trigger:
+  - event: sunset
+    offset: -01:00:00
+    platform: sun
+  - entity_id: device_tracker.94e96ad49595
+    platform: state
+    to: home
+  condition:
+  - condition: state
+    entity_id: device_tracker.94e96ad49595
+    state: home
+  - after: '16:00:00'
+    before: '23:00:00'
+    condition: time
+  action:
+  - entity_id: light.bed_light
+    service: homeassistant.turn_on
+- id: notif_hass_update
+  alias: Update notifications
+  trigger:
+  - platform: state
+    entity_id: updater.updater
+  action:
+    service: notify.pushbullet
+    data_template:
+      title: New Home Assistant Release
+      message: Home Assistant  {{ states.updater.updater.state }} is now available.
+- id: google_sync
+  alias: Sync Google Assistant
+  trigger:
+  - event: start
+    platform: homeassistant
+  action:
+  - service: google_assistant.request_sync
+- action:
+  - data:
+      language: en-us
+      message: Welcome home, Benji.
+    entity_id: media_player.bedroom_speaker
+    service: tts.google_say
+  alias: Test trigger on cabinet lights change
+  condition: []
+  id: '1513377554182'
+  trigger:
+  - entity_id: light.cabinet_lights
+    platform: state

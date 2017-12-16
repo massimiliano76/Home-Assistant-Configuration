@@ -1,0 +1,11 @@
+- platform: mqtt
+  state_topic: tele/DVES_F97FDE/SENSOR
+  name: "Bedroom Temperature"
+  friendly_name: "23asdf3"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json['SI7021'].Temperature }}"
+- platform: mqtt
+  state_topic: tele/DVES_F97FDE/SENSOR
+  name: "Bedroom Humidity"
+  unit_of_measurement: "%" 
+  value_template: "{{ value_json['SI7021'].Humidity }}"

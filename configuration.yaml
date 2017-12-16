@@ -1,0 +1,204 @@
+homeassistant:
+  #customize: !include customize.yaml
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret latitude
+  longitude: !secret longitude
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: !secret elevation
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Europe/Warsaw
+
+# Show links to resources in log and frontend
+#introduction:
+
+# Enables the frontend
+frontend:
+  javascript_version: latest
+
+# Enables configuration UI
+config:
+
+# InfluxDB & Grafana
+influxdb:
+  host: !secret influxdb_host
+  database: !secret influxdb_database
+  username: !secret influxdb_username
+  password: !secret influxdb_password
+
+http:
+  api_password: !secret api_password
+  base_url: !secret base_url
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+  ip_ban_enabled: True
+  login_attempts_threshold: 2
+
+# Database
+recorder:
+  db_url: !secret db_url
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Track the sun
+#sun:
+
+# Sensors
+sensor: !include_dir_merge_list sensors
+
+# Text to speech
+tts:
+  - platform: google
+
+group: !include groups.yaml
+automation: !include automations.yaml
+
+# iOS app integration
+#ios:
+
+# Tracking
+device_tracker:
+  - platform: padavan_tracker
+    consider_home: 10
+    interval_seconds: 3
+    url: http://192.168.1.1/
+    username: !secret padavan_username
+    password: !secret padavan_password
+    track_new_devices: false
+
+# Device Tracker Sensor
+binary_sensor:
+  - platform: device_tracker_sensor
+    entities:
+      - device_tracker.94e96ad49595
+      - device_tracker.98d6f760167f
+      - device_tracker.606dc794bdd4
+      - device_tracker.34ce00ea2be5
+      - device_tracker.001132456A8A
+
+media_player:
+  - platform: spotify
+    client_id: !secret spotify_client_id
+    client_secret: !secret spotify_client_secret
+
+# Synology
+camera:
+  - platform: synology
+    entity_id: camera.synology
+    url: !secret synology_url_port
+    username: !secret synology_username
+    password: !secret synology_password
+    timeout: 15
+    verify_ssl: false
+
+# Vacuum
+vacuum:
+  - platform: xiaomi_miio
+    host: 192.168.1.81
+    token: !secret xiaomi_token
+    name: MiJia
+
+# MQTT - Sonoff, Tasmota
+mqtt:
+  broker: core-mosquitto
+
+# Sonoff
+light:
+  - platform: mqtt
+    name: "Living Room Light"
+    state_topic: "stat/DVES_843FF/POWER"
+    command_topic: "cmnd/DVES_843FF/POWER"
+    qos: 1
+    retain: true
+  - platform: mqtt
+    name: "Bed Light"
+    state_topic: "stat/DVES_F97FDE/POWER"
+    command_topic: "cmnd/DVES_F97FDE/POWER"
+    qos: 1
+    retain: true
+  - platform: mqtt
+    name: "Bedroom Light"
+    state_topic: "stat/DVES_854875/POWER"
+    command_topic: "cmnd/DVES_854875/POWER"
+    qos: 1
+    retain: true
+  - platform: mqtt
+    name: "Christmas Lights"
+    state_topic: "stat/DVES_666394/POWER"
+    command_topic: "cmnd/DVES_666394/POWER"
+    qos: 1
+    retain: true
+  - platform: mqtt
+    name: "Cabinet Lights"
+    state_topic: "stat/DVES_4F8384/POWER"
+    command_topic: "cmnd/DVES_4F8384/POWER"
+    qos: 1
+    retain: true
+
+# Thermostats
+climate: 
+ - platform: mqtt 
+   qos: 1 
+   name: Bedroom Thermostat
+   current_temperature_topic: thermostat/bedroom/current_temperature 
+   temperature_state_topic: thermostat/bedroom/target_temperature 
+   temperature_command_topic: thermostat/bedroom/target_temperature/set 
+   mode_state_topic: thermostat/bedroom/mode 
+   mode_command_topic: thermostat/bedroom/mode/set 
+   away_mode_state_topic: thermostat/bedroom/away 
+   away_mode_command_topic: thermostat/bedroom/away/set 
+   modes: 
+     - boost 
+     - away 
+     - manual 
+     - auto 
+     - on 
+     - off
+
+# Pushbullet
+notify:
+  - name: Pushbullet
+    platform: pushbullet
+    api_key: !secret pushbullet_api_key
+
+# IFTTT
+ifttt:
+  key: !secret ifttt_key
+
+# Google Home
+google_assistant:
+  project_id: !secret google_assistant_project_id
+  client_id: !secret google_assistant_client_id
+  access_token: !secret google_assistant_access_token
+  agent_user_id: !secret google_assistant_agent_user_id
+  exposed_domains:
+    - light
+
+# iFrames
+panel_iframe:
+  grafana:
+    title: "Grafana"
+    url: !secret grafana_url
+    icon: mdi:chart-areaspline
